@@ -1,0 +1,47 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class NumberGame 
+{
+    public static void main(String[] args) 
+    {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        int roundCount = 0;
+        int score = 0;
+
+        while (true) 
+        {
+            System.out.println("ROUND " + (++roundCount));
+            int generatedNumber = random.nextInt(100) + 1;
+            System.out.println("I have generated a random number between 1 and 100.");
+            int attempts = 0;
+            int userGuess;
+
+            do 
+            {
+                System.out.println("Enter your guess:");
+                userGuess = scanner.nextInt();
+                attempts++;
+
+                if (userGuess > generatedNumber) {
+                    System.out.println("Too high ! Try again.");
+                } else if (userGuess < generatedNumber) {
+                    System.out.println("Too low ! Try again.");
+                }
+            } 
+            while (userGuess != generatedNumber);
+
+            System.out.println("Congratulations! You guessed the number correctly.");
+            System.out.println("Number of attempts: " + attempts);
+            System.out.println("Do you want to play again? (yes/no)");
+            String playAgain = scanner.next();
+            if (!playAgain.equalsIgnoreCase("yes")) {
+                break;
+            }
+        }
+
+        System.out.println("Your final score: " + score + " out of " + (roundCount - 1));
+        scanner.close();
+    }
+}
