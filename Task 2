@@ -1,0 +1,63 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class StudentGradeCalculator 
+{
+    public static void main(String[] args) 
+    {
+        Scanner scanner = new Scanner(System.in);
+
+        
+        System.out.println("Enter the number of subjects:");
+        int subjectCount = scanner.nextInt();
+        Map<String, Integer> subjectMarks = new HashMap<>();
+        for (int i = 0; i < subjectCount; i++) 
+        {
+            System.out.println("Enter the marks for Subject " + (i + 1) + ":");
+            String subjectName = "Subject" + (i + 1);
+            subjectMarks.put(subjectName, scanner.nextInt());
+        }
+
+        int totalMarks = calculateTotalMarks(subjectMarks);
+
+        double averagePercentage = calculateAveragePercentage(totalMarks, subjectMarks.size());
+
+        String grade = getGrade(averagePercentage);
+
+        System.out.println("Total Marks: " + totalMarks);
+        System.out.println("Average Percentage: " + averagePercentage + "%");
+        System.out.println("Grade: " + grade);
+
+        scanner.close();
+    }
+
+    private static int calculateTotalMarks(Map<String, Integer> subjectMarks) 
+    {
+        int totalMarks = 0;
+        for (Map.Entry<String, Integer> entry : subjectMarks.entrySet()) {
+            totalMarks += entry.getValue();
+        }
+        return totalMarks;
+    }
+
+    private static double calculateAveragePercentage(int totalMarks, int subjectCount) 
+    {
+        return (double) totalMarks / subjectCount;
+    }
+
+    private static String getGrade(double averagePercentage) 
+    {
+        if (averagePercentage >= 90) {
+            return "A";
+        } else if (averagePercentage >= 80) {
+            return "B";
+        } else if (averagePercentage >= 70) {
+            return "C";
+        } else if (averagePercentage >= 60) {
+            return "D";
+        } else {
+            return "F";
+        }
+    }
+}
