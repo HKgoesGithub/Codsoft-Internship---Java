@@ -1,0 +1,89 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Question {
+    private String question;
+    private List<String> options;
+    private String answer;
+    private int timeLimit;
+
+    public Question(String question, List<String> options, String answer, int timeLimit) {
+        this.question = question;
+        this.options = options;
+        this.answer = answer;
+        this.timeLimit = timeLimit;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public List<String> getOptions() {
+        return options;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public int getTimeLimit() {
+        return timeLimit;
+    }
+}
+
+class Quiz {
+    private List<Question> questions;
+    private int score;
+    private Scanner scanner;
+
+    public Quiz(List<Question> questions, Scanner scanner) {
+        this.questions = questions;
+        this.scanner = scanner;
+        this.score = 0;
+    }
+
+    public void start() {
+        for (Question question : questions) {
+            System.out.println("\nQuestion: " + question.getQuestion());
+            int count = 1;
+            for (String option : question.getOptions()) {
+                System.out.println(count + ". " + option);
+                count++;
+            }
+            System.out.println("You have " + question.getTimeLimit() + " seconds to answer.");
+            long startTime = System.currentTimeMillis();
+            int choice = scanner.nextInt();
+            long endTime = System.currentTimeMillis();
+            long elapsedTime = endTime - startTime;
+            if (elapsedTime <= question.getTimeLimit() * 1000 && question.getOptions().get(choice - 1).equals(question.getAnswer())) {
+                score++;
+            }
+        }
+        System.out.println("\nYour final score is: " + score + "/" + questions.size());
+        int correctCount = 0;
+        int incorrectCount = 0;
+        for (Question question : questions) {
+            if (question.getOptions().get(scanner.nextInt() - 1).equals(question.getAnswer())) {
+                correctCount++;
+            } else {
+                incorrectCount++;
+            }
+        }
+        System.out.println("Correct answers: " + correctCount);
+        System.out.println("Incorrect answers: " + incorrectCount);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        List<Question> questions = new ArrayList<>();
+        questions.add(new Question("What is the capital of France?", List.of("Paris", "London", "Berlin", "Madrid"), "Paris", 10));
+        questions.add(new Question("What is the largest planet in our solar system?", List.of("Jupiter", "Saturn", "Mars", "Earth"), "Jupiter", 10));
+        questions.add(new Question("What is the smallest country in the world?", List.of("Vatican City", "Monaco", "San Marino", "Liechtenstein"), "Vatican City", 10));
+        Scanner scanner = new Scanner(System.in);
+        Quiz quiz = new Quiz(questions, scanner);
+        quiz.start();
+        scanner.close();
+    }
+}
